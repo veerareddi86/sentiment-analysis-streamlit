@@ -25,7 +25,11 @@ OUTPUTS_DIR = os.path.join(BASE_DIR, "outputs")
 if SRC_DIR not in sys.path:
     sys.path.insert(0, SRC_DIR)
 
-from preprocess import preprocess, clean_text  # noqa: E402
+try:
+    from preprocess import preprocess, clean_text  # noqa: E402
+except ImportError:
+    pass
+
 
 # -----------------------------------------------------------------------------
 # Page Configuration & Custom CSS
