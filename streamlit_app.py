@@ -28,8 +28,7 @@ if SRC_DIR not in sys.path:
 try:
     from preprocess import preprocess, clean_text  # noqa: E402
 except ImportError:
-    pass
-
+    pass  # Using embedded preprocessing definitions below
 
 # -----------------------------------------------------------------------------
 # Page Configuration & Custom CSS
@@ -50,6 +49,66 @@ st.markdown(
         color: #e4e6eb;
     }
     
+    /* Textarea & Entered Sentiment Input (Bold, Neat Black Text) */
+    .stTextArea textarea, 
+    div[data-baseweb="textarea"] textarea,
+    div[data-baseweb="base-input"] textarea {
+        color: #0f172a !important; /* Deep crisp black text */
+        -webkit-text-fill-color: #0f172a !important;
+        background-color: #ffffff !important; /* Clean white background */
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        line-height: 1.6 !important;
+        border-radius: 8px !important;
+        border: 2px solid #cbd5e1 !important;
+        padding: 12px 14px !important;
+    }
+
+    .stTextArea textarea:focus,
+    div[data-baseweb="textarea"]:focus-within {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+    }
+
+    .stTextArea textarea::placeholder {
+        color: #64748b !important;
+        -webkit-text-fill-color: #64748b !important;
+        font-weight: 400 !important;
+    }
+
+    /* Clean Buttons */
+    div[data-testid="stButton"] button {
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        transition: all 0.15s ease !important;
+    }
+
+    /* Preset & Secondary Buttons */
+    div[data-testid="stButton"] button:not([kind="primary"]) {
+        background-color: #1e293b !important;
+        color: #f1f5f9 !important;
+        -webkit-text-fill-color: #f1f5f9 !important;
+        border: 1px solid #334155 !important;
+    }
+
+    div[data-testid="stButton"] button:not([kind="primary"]):hover {
+        background-color: #334155 !important;
+        border-color: #38bdf8 !important;
+        color: #38bdf8 !important;
+        -webkit-text-fill-color: #38bdf8 !important;
+    }
+
+    /* Primary Analyze Button */
+    div[data-testid="stButton"] button[kind="primary"] {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border: none !important;
+        font-size: 15px !important;
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+    }
+
     /* Header card */
     .hero-card {
         background: linear-gradient(135deg, #1c1f26 0%, #242933 100%);
@@ -344,17 +403,19 @@ with tab_live:
 
         # Quick example chips right above the input box
         st.write("**Quick Examples (click to test):**")
-        c_ex1, c_ex2, c_ex3, c_ex4, c_ex5 = st.columns(5)
+        c_ex1, c_ex2, c_ex3 = st.columns(3)
         with c_ex1:
             st.button("🌟 Positive", on_click=set_preset_text, args=(presets["🌟 Strong Positive"], "Positive"), use_container_width=True)
         with c_ex2:
             st.button("⚠️ Negative", on_click=set_preset_text, args=(presets["⚠️ Strong Negative"], "Negative"), use_container_width=True)
         with c_ex3:
             st.button("⚖️ Neutral", on_click=set_preset_text, args=(presets["⚖️ Neutral Query"], "Neutral"), use_container_width=True)
+
+        c_ex4, c_ex5 = st.columns(2)
         with c_ex4:
-            st.button("🔄 Negation", on_click=set_preset_text, args=(presets["🔄 Negation Handling"], "Negation"), use_container_width=True)
+            st.button("🔄 Negation Test", on_click=set_preset_text, args=(presets["🔄 Negation Handling"], "Negation"), use_container_width=True)
         with c_ex5:
-            st.button("🥪 Mixed", on_click=set_preset_text, args=(presets["🥪 Mixed Sentiment"], "Mixed"), use_container_width=True)
+            st.button("🥪 Mixed Sentiment", on_click=set_preset_text, args=(presets["🥪 Mixed Sentiment"], "Mixed"), use_container_width=True)
 
         if "current_input" not in st.session_state:
             st.session_state["current_input"] = (
